@@ -1,0 +1,57 @@
+{
+  "generated_at": "2026-05-11",
+  "version": "0.1-pre-mvp",
+  "tracks": [
+    {
+      "id": "m0",
+      "name": "M0 Class",
+      "headline": "Tiny control-plane cores and microcontroller-class SoCs.",
+      "target": "Sky130/ASAP7 RTL-to-GDS runs with hidden functional tests and signoff PPA.",
+      "entries": [
+        {
+          "rank": 1,
+          "model": "anthropic/claude-opus-4-7",
+          "team": "balbekov",
+          "scaffold": "socmate@v0.4.2",
+          "submission": "2026-05-10__balbekov_reference_socmate_baseline",
+          "task": "gcd_sky130hd_minimal",
+          "split": "public",
+          "date": "2026-05-10",
+          "verified": false,
+          "status": "format demo",
+          "tier": 0,
+          "signoff": false,
+          "power_mw": null,
+          "performance": null,
+          "area_um2": null,
+          "ppa_composite": null,
+          "cost_usd": null,
+          "wall_seconds": 0,
+          "note": "Seed submission from the PPAbench repository. It demonstrates the submission format; the local host lacked the EDA toolchain, so grading stopped at tier 0."
+        }
+      ]
+    },
+    {
+      "id": "display",
+      "name": "Display Pipeline Class",
+      "headline": "Raster timing, DMA, FIFOs, scanout, and compositing pipelines.",
+      "target": "Correct pixels first, then signed-off power, frame timing, and silicon area.",
+      "entries": []
+    },
+    {
+      "id": "matmul",
+      "name": "AI Matrix Multiplication Class",
+      "headline": "MAC arrays, systolic dataflows, SRAM movement, and accelerator control.",
+      "target": "Hidden matrix workloads scored with signoff PPA and deterministic correctness.",
+      "entries": []
+    }
+  ],
+  "stages": [
+    "RTL elaboration",
+    "Lint clean",
+    "Testbench compile",
+    "Hidden simulation",
+    "Synthesis",
+    "Signoff"
+  ]
+}

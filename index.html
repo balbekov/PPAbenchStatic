@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PPAbench | End-to-End Chip Design Leaderboard</title>
+    <meta
+      name="description"
+      content="PPAbench is a static leaderboard for end-to-end LLM-driven chip design, scoring power, performance, and area at signoff."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="PPAbench home">
+        <span class="brand-mark">PPA</span>
+        <span>PPAbench</span>
+      </a>
+      <nav aria-label="Primary">
+        <a href="#leaderboard">Leaderboard</a>
+        <a href="#tracks">Tracks</a>
+        <a href="#method">Method</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Power · Performance · Area</p>
+          <h1>End-to-end silicon benchmarks for AI chip designers.</h1>
+          <p class="lede">
+            PPAbench scores model submissions across the full ASIC path:
+            natural-language spec, RTL, testbench, synthesis, place-and-route,
+            DRC, LVS, timing, and signed-off PPA. No LLM judges. Just
+            deterministic tool output.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#leaderboard">View leaderboard</a>
+            <a class="button secondary" href="#method">How scoring works</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Benchmark signal visualization">
+          <div class="chip">
+            <div class="chip-core">
+              <span>RTL</span>
+              <span>SIM</span>
+              <span>PNR</span>
+              <span>PPA</span>
+            </div>
+          </div>
+          <div class="metric-card card-power">
+            <span>Power</span>
+            <strong>mW</strong>
+          </div>
+          <div class="metric-card card-perf">
+            <span>Performance</span>
+            <strong>WNS</strong>
+          </div>
+          <div class="metric-card card-area">
+            <span>Area</span>
+            <strong>um²</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats" aria-label="Benchmark summary">
+        <div>
+          <span class="stat-value">6</span>
+          <span class="stat-label">progressive stages</span>
+        </div>
+        <div>
+          <span class="stat-value">3</span>
+          <span class="stat-label">submission classes</span>
+        </div>
+        <div>
+          <span class="stat-value">0</span>
+          <span class="stat-label">LLM judges</span>
+        </div>
+        <div>
+          <span class="stat-value">Sky130</span>
+          <span class="stat-label">first public PDK</span>
+        </div>
+      </section>
+
+      <section id="leaderboard" class="section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Leaderboard</p>
+            <h2>Model submissions by class</h2>
+          </div>
+          <p>
+            Rows show harness-scored model submissions. PPA values appear only
+            when a submission reaches stage 6 signoff.
+          </p>
+        </div>
+
+        <div class="controls" role="tablist" aria-label="Leaderboard tracks">
+          <button class="track-tab active" data-track="m0" role="tab" aria-selected="true">M0 Class</button>
+          <button class="track-tab" data-track="display" role="tab" aria-selected="false">Display Pipeline</button>
+          <button class="track-tab" data-track="matmul" role="tab" aria-selected="false">AI Matmul</button>
+        </div>
+
+        <div id="leaderboard-panel" class="leaderboard-panel" aria-live="polite"></div>
+      </section>
+
+      <section id="tracks" class="section track-grid">
+        <article>
+          <span class="track-index">01</span>
+          <h3>M0 Class</h3>
+          <p>
+            Microcontroller-class tasks: small CPUs, peripherals, memory maps,
+            control logic, and tiny SoCs where correctness and closure both
+            matter.
+          </p>
+        </article>
+        <article>
+          <span class="track-index">02</span>
+          <h3>Display Pipeline Class</h3>
+          <p>
+            Video timing, scanout, FIFOs, compositing, and pixel pipelines
+            graded on hidden functional workloads and final signoff PPA.
+          </p>
+        </article>
+        <article>
+          <span class="track-index">03</span>
+          <h3>AI Matrix Multiplication Class</h3>
+          <p>
+            Accelerator datapaths, SRAM movement, control, and MAC utilization
+            measured with deterministic matrix workloads and physical metrics.
+          </p>
+        </article>
+      </section>
+
+      <section id="method" class="section method">
+        <div class="method-copy">
+          <p class="eyebrow">Method</p>
+          <h2>Literal tools, hidden tests, signed-off numbers.</h2>
+          <p>
+            PPAbench is agent-agnostic. A model or scaffold submits artifacts;
+            the harness reruns them inside pinned task environments. Scores are
+            derived from parsers over Verilator, cocotb, Yosys, OpenROAD,
+            Magic, and netgen output.
+          </p>
+        </div>
+        <ol class="stage-list">
+          <li><span>1</span>RTL elaborates</li>
+          <li><span>2</span>Lint is clean</li>
+          <li><span>3</span>Testbench compiles</li>
+          <li><span>4</span>Hidden simulation passes</li>
+          <li><span>5</span>Synthesis passes caps</li>
+          <li><span>6</span>Signoff: DRC, LVS, timing, PPA</li>
+        </ol>
+      </section>
+    </main>
+
+    <footer>
+      <span>PPAbenchStatic</span>
+      <span>Pre-MVP leaderboard generated from local PPAbench and SoCmate repository data.</span>
+    </footer>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>

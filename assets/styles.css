@@ -607,6 +607,125 @@ td span {
   font-family: "JetBrains Mono", monospace;
 }
 
+.narrative .two-col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.narrative article,
+.source-card,
+.failure-grid article,
+.roadmap article {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(16, 20, 27, 0.78);
+  box-shadow: var(--shadow);
+}
+
+.narrative article,
+.source-card {
+  padding: 24px;
+}
+
+.narrative h3,
+.source-card h3 {
+  margin-bottom: 12px;
+  font-size: 22px;
+}
+
+.narrative p,
+.narrative li,
+.source-card p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.narrative ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.compact article {
+  min-height: 100%;
+}
+
+.table-wrap.always {
+  display: block;
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(16, 20, 27, 0.78);
+  box-shadow: var(--shadow);
+}
+
+.code-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.82fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.code {
+  margin: 0;
+  padding: 22px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #080b10;
+  color: #d8e4f1;
+  box-shadow: var(--shadow);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.code span {
+  color: var(--accent);
+}
+
+.code.small {
+  margin-top: 16px;
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+
+.failure-grid,
+.roadmap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.failure-grid article,
+.roadmap article {
+  padding: 18px;
+}
+
+.failure-grid span,
+.roadmap span {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--accent-2);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.failure-grid strong,
+.roadmap strong {
+  display: block;
+  margin-bottom: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 17px;
+}
+
+.failure-grid p,
+.roadmap p {
+  margin-bottom: 0;
+}
+
 footer {
   display: flex;
   justify-content: space-between;
@@ -623,7 +742,9 @@ footer span:first-child {
 
 @media (max-width: 980px) {
   .hero,
-  .method {
+  .method,
+  .narrative .two-col,
+  .code-grid {
     grid-template-columns: 1fr;
   }
 
@@ -636,7 +757,9 @@ footer span:first-child {
   }
 
   .stats,
-  .track-grid {
+  .track-grid,
+  .failure-grid,
+  .roadmap {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -655,7 +778,9 @@ footer span:first-child {
 
   nav {
     width: 100%;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    justify-content: flex-start;
   }
 
   .hero {
@@ -718,7 +843,9 @@ footer span:first-child {
   }
 
   .stats,
-  .track-grid {
+  .track-grid,
+  .failure-grid,
+  .roadmap {
     grid-template-columns: 1fr;
   }
 
@@ -726,7 +853,7 @@ footer span:first-child {
     padding-top: 66px;
   }
 
-  .table-wrap {
+  .leaderboard-panel .table-wrap {
     display: none;
   }
 

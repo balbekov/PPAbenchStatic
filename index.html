@@ -26,6 +26,9 @@
         <a href="#leaderboard">Leaderboard</a>
         <a href="#tracks">Tracks</a>
         <a href="#method">Method</a>
+        <a href="#tasks">Tasks</a>
+        <a href="#anti-gaming">Defenses</a>
+        <a href="#submit">Submit</a>
       </nav>
     </header>
 
@@ -156,6 +159,212 @@
           <li><span>5</span>Synthesis passes caps</li>
           <li><span>6</span>Signoff: DRC, LVS, timing, PPA</li>
         </ol>
+      </section>
+
+      <section id="overview" class="section narrative">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Why PPAbench</p>
+            <h2>The missing full-stack chip benchmark.</h2>
+          </div>
+          <p>
+            Existing public evals usually stop at Verilog generation,
+            simulation, synthesis, or human-authored RTL-to-GDS flows. PPAbench
+            keeps the model in the loop and grades the whole path.
+          </p>
+        </div>
+        <div class="two-col">
+          <article>
+            <h3>No public benchmark grades the whole pipeline</h3>
+            <p>
+              VerilogEval and VeriGen stop at simulation. RTLLM goes to
+              synthesis. ChipBench and ASIC-Agent-Bench stop at module level.
+              ORFS CI reaches GDS, but assumes human-authored RTL.
+            </p>
+          </article>
+          <article>
+            <h3>PPAbench grades spec to signoff</h3>
+            <p>
+              Natural-language requirements become RTL, tests, synthesis, P&R,
+              DRC, LVS, timing, and final signoff metrics on real PDKs. The
+              headline score is Power, Performance, and Area versus golden.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="tasks" class="section narrative">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Tasks</p>
+            <h2>One directory, one locked evaluation contract.</h2>
+          </div>
+          <p>
+            Each task ships a public spec and private grading material. The
+            agent sees the spec and toolchain; the harness mounts hidden tests,
+            golden references, manifests, and locked flow files only at scoring
+            time.
+          </p>
+        </div>
+
+        <div class="table-wrap always">
+          <table>
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Class</th>
+                <th>PDK</th>
+                <th>Clock</th>
+                <th>Caps</th>
+                <th>Release</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>gcd_sky130hd_minimal</strong><span>32-bit GCD unit · FSM-driven</span></td>
+                <td>M0 / arithmetic seed</td>
+                <td>sky130hd</td>
+                <td>100 MHz</td>
+                <td>60,000 um² · 5.0 mW</td>
+                <td>2026-06-01</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-grid">
+          <pre class="code"><span>tasks/&lt;task-id&gt;/</span>
+├── task.yaml
+├── canary.txt
+├── spec.md
+├── spec_paraphrases/
+├── golden/
+│   ├── rtl/
+│   ├── tb/
+│   ├── config.mk
+│   ├── metrics.json
+│   └── gds_hash.txt
+├── tb_hidden/
+├── env/
+├── stage_scripts/
+└── manifest.json</pre>
+          <div class="source-card">
+            <h3>Source pools</h3>
+            <p>
+              v0.1 targets 10 Sky130 tasks: 8 public and 2 holdout. Future
+              pools include ORFS reference designs for closure-grade tasks,
+              RTLLM v2 modules for small arithmetic, memory, control, and DSP
+              coverage, and bespoke tasks shaped around SoCmate-style agents.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="failure-modes" class="section narrative">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Diagnostics</p>
+            <h2>Failure modes are first-class columns.</h2>
+          </div>
+          <p>
+            PPAbench does not collapse everything into one opaque score. Stage
+            transitions and failure modes tell model builders exactly where the
+            run failed.
+          </p>
+        </div>
+        <div class="failure-grid">
+          <article><span>Pre-stage</span><strong>agent_timeout</strong><p>Wall-clock budget exceeded.</p></article>
+          <article><span>Artifacts</span><strong>artifact_missing</strong><p>No required RTL or solution files.</p></article>
+          <article><span>Stage 1</span><strong>stage1_elab_failed</strong><p>Verilator elaboration failed.</p></article>
+          <article><span>Stage 4</span><strong>stage4_sim_mismatch</strong><p>Hidden cocotb assertion failed.</p></article>
+          <article><span>Stage 5</span><strong>cap_exceeded_area</strong><p>Synthesis exceeded task caps.</p></article>
+          <article><span>Stage 6</span><strong>stage6_timing_violated</strong><p>WNS below zero at target clock.</p></article>
+        </div>
+      </section>
+
+      <section id="anti-gaming" class="section narrative">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Anti-gaming</p>
+            <h2>Defense in depth for a gameable metric.</h2>
+          </div>
+          <p>
+            PPA is easy to game if the benchmark is naive. PPAbench layers RTL,
+            flow, task, and metadata defenses so a submission has to be correct
+            and reproducible, not merely tuned to visible tests.
+          </p>
+        </div>
+
+        <div class="two-col compact">
+          <article>
+            <h3>RTL / PPA level</h3>
+            <ul>
+              <li>Hard caps on area, power, gates, and macro count.</li>
+              <li>Locked synthesis and P&R configs from golden task files.</li>
+              <li>Standard-cell and macro allowlists with netlist audit.</li>
+              <li>Synthesis-attribute blacklist and stripped-attribute smoke tests.</li>
+              <li>Hidden grading testbench with boundary and mutation coverage.</li>
+              <li>Logical equivalence checks where task scale allows it.</li>
+            </ul>
+          </article>
+          <article>
+            <h3>Meta level</h3>
+            <ul>
+              <li>Spec obfuscation: no reference names or trade-name leakage.</li>
+              <li>Held-out paraphrases reported as the minimum score.</li>
+              <li>Visible public versus holdout score delta.</li>
+              <li>Canary GUIDs in task files for contamination probing.</li>
+              <li>Time-windowed eval by task release date.</li>
+              <li>Verified-tier scaffold disclosure and trajectory inspection.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="submit" class="section narrative">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Submit</p>
+            <h2>Two paths: artifacts for public, Docker for holdout.</h2>
+          </div>
+          <p>
+            Public submissions package model-produced artifacts. Holdout
+            submissions ship an agent image that runs server-side against tasks
+            the agent never sees.
+          </p>
+        </div>
+
+        <div class="two-col">
+          <article>
+            <h3>Path A · public split</h3>
+            <p>
+              Run your agent, write one solution directory per task, grade
+              locally for debugging, then package an MLPerf-style submission
+              tree with predictions, logs, exact artifacts, trajectories, and
+              compliance metadata. Maintainers re-grade from artifacts.
+            </p>
+            <pre class="code small">ppabench grade tasks/gcd_sky130hd_minimal work/gcd/solution
+ppabench package --runs runs/ --team your-team --split public</pre>
+          </article>
+          <article>
+            <h3>Path B · holdout split</h3>
+            <p>
+              Submit an agent Docker image with a defined entrypoint. The image
+              runs in an egress-restricted environment with read-only task
+              input, writable solution output, and only the configured model API
+              reachable.
+            </p>
+            <pre class="code small">docker run --network=ppabench-egress-only \
+  -v /task:/task:ro -v /solution:/solution \
+  myorg/myagent:v1</pre>
+          </article>
+        </div>
+
+        <div class="roadmap">
+          <article><span>v0.1</span><strong>10 tasks</strong><p>8 public + 2 holdout, Sky130, CLI harness.</p></article>
+          <article><span>v0.2</span><strong>50 tasks</strong><p>Sky130 + ASAP7, public leaderboard, scaffold disclosure.</p></article>
+          <article><span>v1.0</span><strong>150 tasks</strong><p>4 PDKs, audited tier, Pareto front, annual rotation.</p></article>
+        </div>
       </section>
     </main>
 

@@ -3,6 +3,13 @@
   "version": "0.1-pre-mvp",
   "tracks": [
     {
+      "id": "socmate_mpw",
+      "name": "SocMate MPW Prototype",
+      "headline": "Agentic SocMate designs behind one fixed MPW wrapper.",
+      "target": "Codec, transformer/LLM accelerator, and three-stage MCU runs scored by hidden harness simulation plus deterministic PPA/KPI scorecards.",
+      "entries": []
+    },
+    {
       "id": "m0",
       "name": "M0 Class",
       "headline": "Tiny control-plane cores and microcontroller-class SoCs.",

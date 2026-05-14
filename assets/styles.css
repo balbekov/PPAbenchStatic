@@ -542,7 +542,7 @@ td span {
 
 .track-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
@@ -648,6 +648,128 @@ td span {
 
 .compact article {
   min-height: 100%;
+}
+
+.flow-diagram {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr) auto minmax(180px, 1fr) auto minmax(180px, 1fr) auto minmax(180px, 1fr);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.flow-diagram article,
+.example-grid article,
+.contract-strip {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(16, 20, 27, 0.78);
+  box-shadow: var(--shadow);
+}
+
+.flow-diagram article,
+.example-grid article {
+  padding: 20px;
+}
+
+.flow-diagram span,
+.contract-strip span,
+.example-grid dt {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--accent-2);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.flow-diagram strong,
+.contract-strip strong {
+  display: block;
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.3;
+}
+
+.flow-diagram p,
+.example-grid p {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.58;
+}
+
+.flow-diagram code,
+.example-grid code,
+.source-card code,
+.section-head code {
+  color: #d8e4f1;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.95em;
+}
+
+.flow-arrow {
+  display: grid;
+  min-width: 24px;
+  place-items: center;
+  color: var(--accent);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.contract-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin-top: 16px;
+  overflow: hidden;
+  background: var(--line);
+}
+
+.contract-strip div {
+  padding: 18px;
+  background: rgba(16, 20, 27, 0.92);
+}
+
+.contract-strip span {
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.example-grid h3 {
+  margin-bottom: 12px;
+  font-size: 24px;
+}
+
+.example-grid dl {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 18px 0 0;
+}
+
+.example-grid dl div {
+  min-height: 72px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.example-grid dt {
+  margin-bottom: 6px;
+}
+
+.example-grid dd {
+  margin: 0;
+  color: var(--text);
+  font-weight: 800;
 }
 
 .table-wrap.always {
@@ -758,9 +880,20 @@ footer span:first-child {
 
   .stats,
   .track-grid,
+  .example-grid,
+  .contract-strip,
   .failure-grid,
   .roadmap {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .flow-diagram {
+    grid-template-columns: 1fr;
+  }
+
+  .flow-arrow {
+    min-height: 20px;
+    transform: rotate(90deg);
   }
 
   .section-head,
@@ -844,6 +977,8 @@ footer span:first-child {
 
   .stats,
   .track-grid,
+  .example-grid,
+  .contract-strip,
   .failure-grid,
   .roadmap {
     grid-template-columns: 1fr;

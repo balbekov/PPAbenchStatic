@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PPAbench | End-to-End Chip Design Leaderboard</title>
+    <title>PPAbench | SocMate MPW Benchmark Prototype</title>
     <meta
       name="description"
-      content="PPAbench is a static leaderboard for end-to-end LLM-driven chip design, scoring power, performance, and area at signoff."
+      content="PPAbench presents the SocMate MPW benchmark prototype: agentic chip design runs through a fixed wrapper, hidden harness simulation, deterministic PPA/KPI metrics, and a scorecard."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,11 +23,11 @@
         <span>PPAbench</span>
       </a>
       <nav aria-label="Primary">
+        <a href="#socmate-flow">Flow</a>
+        <a href="#examples">Examples</a>
         <a href="#leaderboard">Leaderboard</a>
-        <a href="#tracks">Tracks</a>
-        <a href="#method">Method</a>
+        <a href="#method">Scoring</a>
         <a href="#tasks">Tasks</a>
-        <a href="#anti-gaming">Defenses</a>
         <a href="#submit">Submit</a>
       </nav>
     </header>
@@ -35,26 +35,26 @@
     <main id="top">
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Power · Performance · Area</p>
-          <h1>End-to-end silicon benchmarks for AI chip designers.</h1>
+          <p class="eyebrow">SocMate MPW prototype · Power · Performance · Area</p>
+          <h1>Agentic chip design, scored like a fixed MPW shuttle.</h1>
           <p class="lede">
-            PPAbench scores model submissions across the full ASIC path:
-            natural-language spec, RTL, testbench, synthesis, place-and-route,
-            DRC, LVS, timing, and signed-off PPA. No LLM judges. Just
-            deterministic tool output.
+            The new SocMate suite runs an agentic design flow, locks the output
+            behind a Caravel-like wrapper and pinout, then grades it with hidden
+            simulation plus deterministic PPA and application KPI checks. The
+            result is a clear scorecard, not an LLM judgment.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#leaderboard">View leaderboard</a>
-            <a class="button secondary" href="#method">How scoring works</a>
+            <a class="button primary" href="#socmate-flow">See the flow</a>
+            <a class="button secondary" href="#examples">View examples</a>
           </div>
         </div>
         <div class="hero-visual" aria-label="Benchmark signal visualization">
           <div class="chip">
             <div class="chip-core">
-              <span>RTL</span>
+              <span>AGENT</span>
+              <span>WRAP</span>
               <span>SIM</span>
-              <span>PNR</span>
-              <span>PPA</span>
+              <span>SCORE</span>
             </div>
           </div>
           <div class="metric-card card-power">
@@ -74,12 +74,12 @@
 
       <section class="stats" aria-label="Benchmark summary">
         <div>
-          <span class="stat-value">6</span>
-          <span class="stat-label">progressive stages</span>
+          <span class="stat-value">3</span>
+          <span class="stat-label">prototype designs</span>
         </div>
         <div>
-          <span class="stat-value">3</span>
-          <span class="stat-label">submission classes</span>
+          <span class="stat-value">38</span>
+          <span class="stat-label">fixed GPIO pins</span>
         </div>
         <div>
           <span class="stat-value">0</span>
@@ -87,7 +87,134 @@
         </div>
         <div>
           <span class="stat-value">Sky130</span>
-          <span class="stat-label">first public PDK</span>
+          <span class="stat-label">MPW target</span>
+        </div>
+      </section>
+
+      <section id="socmate-flow" class="section narrative">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Benchmark Flow</p>
+            <h2>From SocMate run to deterministic scorecard.</h2>
+          </div>
+          <p>
+            The prototype fixes the measurement boundary. SocMate can choose
+            the internal architecture, but every submitted design must enter the
+            same wrapper, harness, and metrics pipeline.
+          </p>
+        </div>
+
+        <div class="flow-diagram" aria-label="SocMate MPW benchmark flow">
+          <article>
+            <span>01</span>
+            <strong>Agentic SocMate run</strong>
+            <p>Headless SocMate receives the design requirements and generates RTL, integration collateral, tests, logs, and metrics artifacts.</p>
+          </article>
+          <div class="flow-arrow">→</div>
+          <article>
+            <span>02</span>
+            <strong>Fixed MPW wrapper</strong>
+            <p>The public top is always <code>user_project_wrapper</code> with fixed Wishbone, LA, IRQ, QSPI, and 38-bit GPIO assignments.</p>
+          </article>
+          <div class="flow-arrow">→</div>
+          <article>
+            <span>03</span>
+            <strong>Hidden harness simulation</strong>
+            <p>The harness drives Wishbone control, byte streams, optional flash, fixed seeds, timeouts, and hidden design-specific vectors.</p>
+          </article>
+          <div class="flow-arrow">→</div>
+          <article>
+            <span>04</span>
+            <strong>PPA + KPI metrics</strong>
+            <p>Open tool outputs become area, power, Fmax, gates, macros, SRAM use, protocol checks, and deterministic application KPIs.</p>
+          </article>
+          <div class="flow-arrow">→</div>
+          <article>
+            <span>05</span>
+            <strong>Scorecard</strong>
+            <p>A design passes only when the wrapper contract, hidden tests, PPA caps, and required KPIs all pass.</p>
+          </article>
+        </div>
+
+        <div class="contract-strip" aria-label="Fixed wrapper contract">
+          <div>
+            <span>Control</span>
+            <strong>Wishbone @ 0x30000000</strong>
+          </div>
+          <div>
+            <span>Streams</span>
+            <strong>GPIO valid / ready / data / last</strong>
+          </div>
+          <div>
+            <span>Flash</span>
+            <strong>Reserved QSPI pins</strong>
+          </div>
+          <div>
+            <span>Status</span>
+            <strong>GPIO 35 done · 36 error · 37 zero</strong>
+          </div>
+        </div>
+      </section>
+
+      <section id="examples" class="section narrative">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Prototype Examples</p>
+            <h2>Three concrete MPW-constrained targets.</h2>
+          </div>
+          <p>
+            Each example uses the same wrapper and grading path, but stresses a
+            different part of the agentic design problem: compression quality,
+            flash-streaming acceleration, or small CPU correctness.
+          </p>
+        </div>
+
+        <div class="example-grid">
+          <article>
+            <span class="track-index">codec_cavlc_v2</span>
+            <h3>Codec</h3>
+            <p>
+              H.264-inspired multiframe CAVLC codec from SocMate V2
+              requirements. Hidden vectors check Mort GIF rate-distortion at
+              QP24, QP36, and QP48.
+            </p>
+            <dl>
+              <div><dt>Clock</dt><dd>50 MHz</dd></div>
+              <div><dt>Area cap</dt><dd>3.0M um²</dd></div>
+              <div><dt>Power cap</dt><dd>120 mW</dd></div>
+              <div><dt>SRAM cap</dt><dd>16 KB</dd></div>
+            </dl>
+          </article>
+          <article>
+            <span class="track-index">transformer_flash_accel</span>
+            <h3>Transformer / LLM accelerator</h3>
+            <p>
+              Flash-streaming TinyStories or llama2.c-class accelerator. The
+              harness checks INT4/INT8 matmul exactness, checkpoint tolerance,
+              flash-bandwidth accounting, and no bulk on-chip weight storage.
+            </p>
+            <dl>
+              <div><dt>Clock</dt><dd>40 MHz</dd></div>
+              <div><dt>Area cap</dt><dd>8.0M um²</dd></div>
+              <div><dt>Power cap</dt><dd>180 mW</dd></div>
+              <div><dt>SRAM cap</dt><dd>64 KB</dd></div>
+            </dl>
+          </article>
+          <article>
+            <span class="track-index">mcu3_pipeline</span>
+            <h3>Three-stage MCU</h3>
+            <p>
+              Simple three-stage 8-bit MCU from SocMate's <code>mcu3</code>
+              block spec. The harness checks the reference program result,
+              pipeline latency, stall hold behavior, and halt behavior.
+            </p>
+            <dl>
+              <div><dt>Clock</dt><dd>80 MHz</dd></div>
+              <div><dt>Area cap</dt><dd>250K um²</dd></div>
+              <div><dt>Power cap</dt><dd>20 mW</dd></div>
+              <div><dt>SRAM cap</dt><dd>1 KB</dd></div>
+            </dl>
+          </article>
         </div>
       </section>
 
@@ -95,16 +222,17 @@
         <div class="section-head">
           <div>
             <p class="eyebrow">Leaderboard</p>
-            <h2>Model submissions by class</h2>
+            <h2>Scored submissions by benchmark track.</h2>
           </div>
           <p>
-            Rows show harness-scored model submissions. PPA values appear only
-            when a submission reaches stage 6 signoff.
+            Rows show harness-scored model submissions. The SocMate MPW track
+            is ready for prototype scorecards from the fixed wrapper flow.
           </p>
         </div>
 
         <div class="controls" role="tablist" aria-label="Leaderboard tracks">
-          <button class="track-tab active" data-track="m0" role="tab" aria-selected="true">M0 Class</button>
+          <button class="track-tab active" data-track="socmate_mpw" role="tab" aria-selected="true">SocMate MPW</button>
+          <button class="track-tab" data-track="m0" role="tab" aria-selected="false">M0 Class</button>
           <button class="track-tab" data-track="display" role="tab" aria-selected="false">Display Pipeline</button>
           <button class="track-tab" data-track="matmul" role="tab" aria-selected="false">AI Matmul</button>
         </div>
@@ -115,6 +243,15 @@
       <section id="tracks" class="section track-grid">
         <article>
           <span class="track-index">01</span>
+          <h3>SocMate MPW Prototype</h3>
+          <p>
+            Agentic SocMate runs for codec, transformer accelerator, and MCU
+            designs, all constrained by the same Caravel-like wrapper and
+            deterministic PPA/KPI scorecard.
+          </p>
+        </article>
+        <article>
+          <span class="track-index">02</span>
           <h3>M0 Class</h3>
           <p>
             Microcontroller-class tasks: small CPUs, peripherals, memory maps,
@@ -123,7 +260,7 @@
           </p>
         </article>
         <article>
-          <span class="track-index">02</span>
+          <span class="track-index">03</span>
           <h3>Display Pipeline Class</h3>
           <p>
             Video timing, scanout, FIFOs, compositing, and pixel pipelines
@@ -131,7 +268,7 @@
           </p>
         </article>
         <article>
-          <span class="track-index">03</span>
+          <span class="track-index">04</span>
           <h3>AI Matrix Multiplication Class</h3>
           <p>
             Accelerator datapaths, SRAM movement, control, and MAC utilization
@@ -145,49 +282,49 @@
           <p class="eyebrow">Method</p>
           <h2>Literal tools, hidden tests, signed-off numbers.</h2>
           <p>
-            PPAbench is agent-agnostic. A model or scaffold submits artifacts;
-            the harness reruns them inside pinned task environments. Scores are
-            derived from parsers over Verilator, cocotb, Yosys, OpenROAD,
-            Magic, and netgen output.
+            PPAbench is agent-agnostic, but the SocMate prototype gives it a
+            concrete agentic path. The harness consumes artifacts and metrics
+            from pinned task environments, then derives scores from deterministic
+            simulation and implementation outputs.
           </p>
         </div>
         <ol class="stage-list">
-          <li><span>1</span>RTL elaborates</li>
-          <li><span>2</span>Lint is clean</li>
-          <li><span>3</span>Testbench compiles</li>
-          <li><span>4</span>Hidden simulation passes</li>
-          <li><span>5</span>Synthesis passes caps</li>
-          <li><span>6</span>Signoff: DRC, LVS, timing, PPA</li>
+          <li><span>1</span>Prepare isolated SocMate workspace</li>
+          <li><span>2</span>Run headless SocMate against requirements</li>
+          <li><span>3</span>Check fixed wrapper and pinout contract</li>
+          <li><span>4</span>Run hidden deterministic harness simulation</li>
+          <li><span>5</span>Extract PPA and resource metrics</li>
+          <li><span>6</span>Emit pass/fail KPI scorecard</li>
         </ol>
       </section>
 
       <section id="overview" class="section narrative">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Why PPAbench</p>
-            <h2>The missing full-stack chip benchmark.</h2>
+            <p class="eyebrow">Why This Matters</p>
+            <h2>A full-stack benchmark with a real integration boundary.</h2>
           </div>
           <p>
-            Existing public evals usually stop at Verilog generation,
-            simulation, synthesis, or human-authored RTL-to-GDS flows. PPAbench
-            keeps the model in the loop and grades the whole path.
+            The MPW wrapper turns generated RTL into a comparable SoC-level
+            artifact. The hidden harness then tests behavior, protocol, and PPA
+            without trusting the agent's own summary.
           </p>
         </div>
         <div class="two-col">
           <article>
-            <h3>No public benchmark grades the whole pipeline</h3>
+            <h3>Clear public contract</h3>
             <p>
-              VerilogEval and VeriGen stop at simulation. RTLLM goes to
-              synthesis. ChipBench and ASIC-Agent-Bench stop at module level.
-              ORFS CI reaches GDS, but assumes human-authored RTL.
+              Participants know the wrapper, Wishbone register bank, stream
+              pins, QSPI reservation, clock assumptions, and PPA caps before
+              they run the benchmark.
             </p>
           </article>
           <article>
-            <h3>PPAbench grades spec to signoff</h3>
+            <h3>Hidden but deterministic grading</h3>
             <p>
-              Natural-language requirements become RTL, tests, synthesis, P&R,
-              DRC, LVS, timing, and final signoff metrics on real PDKs. The
-              headline score is Power, Performance, and Area versus golden.
+              The harness keeps golden vectors and implementation checks out of
+              the agent workspace, but every pass/fail and metric is produced by
+              deterministic scripts.
             </p>
           </article>
         </div>
@@ -196,14 +333,13 @@
       <section id="tasks" class="section narrative">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Tasks</p>
-            <h2>One directory, one locked evaluation contract.</h2>
+            <p class="eyebrow">Run The Prototype</p>
+            <h2>One suite manifest, three prepared workspaces.</h2>
           </div>
           <p>
-            Each task ships a public spec and private grading material. The
-            agent sees the spec and toolchain; the harness mounts hidden tests,
-            golden references, manifests, and locked flow files only at scoring
-            time.
+            The prototype source lives in <code>benchmarks/socmate_mpw/</code>.
+            Workspaces receive requirements, a headless launcher, a manifest,
+            logs, and a metrics directory.
           </p>
         </div>
 
@@ -211,50 +347,61 @@
           <table>
             <thead>
               <tr>
-                <th>Task</th>
-                <th>Class</th>
+                <th>Design</th>
+                <th>Category</th>
                 <th>PDK</th>
                 <th>Clock</th>
                 <th>Caps</th>
-                <th>Release</th>
+                <th>Required KPIs</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>gcd_sky130hd_minimal</strong><span>32-bit GCD unit · FSM-driven</span></td>
-                <td>M0 / arithmetic seed</td>
+                <td><strong>codec_cavlc_v2</strong><span>H.264-inspired multiframe CAVLC codec</span></td>
+                <td>DSP</td>
                 <td>sky130hd</td>
-                <td>100 MHz</td>
-                <td>60,000 um² · 5.0 mW</td>
-                <td>2026-06-01</td>
+                <td>50 MHz</td>
+                <td>3.0M um² · 120 mW · 16 KB SRAM</td>
+                <td>QP24 / QP36 / QP48 rate-distortion</td>
+              </tr>
+              <tr>
+                <td><strong>transformer_flash_accel</strong><span>Flash-streaming TinyStories / llama2.c-class accelerator</span></td>
+                <td>Accelerator</td>
+                <td>sky130hd</td>
+                <td>40 MHz</td>
+                <td>8.0M um² · 180 mW · 64 KB SRAM</td>
+                <td>INT matmul, checkpoint, flash bandwidth, no bulk weights</td>
+              </tr>
+              <tr>
+                <td><strong>mcu3_pipeline</strong><span>Simple three-stage 8-bit MCU</span></td>
+                <td>CPU core</td>
+                <td>sky130hd</td>
+                <td>80 MHz</td>
+                <td>250K um² · 20 mW · 1 KB SRAM</td>
+                <td>Program result, latency, stall hold, no halt</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <div class="code-grid">
-          <pre class="code"><span>tasks/&lt;task-id&gt;/</span>
-├── task.yaml
-├── canary.txt
-├── spec.md
-├── spec_paraphrases/
-├── golden/
-│   ├── rtl/
-│   ├── tb/
-│   ├── config.mk
-│   ├── metrics.json
-│   └── gds_hash.txt
-├── tb_hidden/
-├── env/
-├── stage_scripts/
-└── manifest.json</pre>
+          <pre class="code"><span>ppabench socmate prepare benchmarks/socmate_mpw/benchmark.yaml \
+  --out runs/socmate_mpw \
+  --socmate-repo /home/ubuntu/socmate \
+  --overwrite</span>
+
+bash runs/socmate_mpw/codec_cavlc_v2/run_socmate.sh
+
+ppabench socmate grade benchmarks/socmate_mpw/benchmark.yaml \
+  runs/socmate_mpw/codec_cavlc_v2/metrics/metrics.json \
+  --out runs/socmate_mpw/codec_cavlc_v2/scorecard.json</pre>
           <div class="source-card">
-            <h3>Source pools</h3>
+            <h3>Generated workspace</h3>
             <p>
-              v0.1 targets 10 Sky130 tasks: 8 public and 2 holdout. Future
-              pools include ORFS reference designs for closure-grade tasks,
-              RTLLM v2 modules for small arithmetic, memory, control, and DSP
-              coverage, and bespoke tasks shaped around SoCmate-style agents.
+              Each prepared design contains <code>requirements.md</code>,
+              <code>run_socmate.sh</code>, <code>workspace_manifest.json</code>,
+              <code>logs/</code>, and <code>metrics/</code>. The grader writes a
+              scorecard from a metrics JSON that matches the SocMate MPW schema.
             </p>
           </div>
         </div>
@@ -285,37 +432,31 @@
       <section id="anti-gaming" class="section narrative">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Anti-gaming</p>
-            <h2>Defense in depth for a gameable metric.</h2>
+            <p class="eyebrow">Defenses</p>
+            <h2>Guardrails stay in the background.</h2>
           </div>
           <p>
-            PPA is easy to game if the benchmark is naive. PPAbench layers RTL,
-            flow, task, and metadata defenses so a submission has to be correct
-            and reproducible, not merely tuned to visible tests.
+            Defenses remain part of the benchmark, but they support the main
+            user workflow: understand the public contract, run the agent, and
+            reproduce the deterministic scorecard.
           </p>
         </div>
 
         <div class="two-col compact">
           <article>
-            <h3>RTL / PPA level</h3>
+            <h3>Design-level checks</h3>
             <ul>
-              <li>Hard caps on area, power, gates, and macro count.</li>
-              <li>Locked synthesis and P&R configs from golden task files.</li>
-              <li>Standard-cell and macro allowlists with netlist audit.</li>
-              <li>Synthesis-attribute blacklist and stripped-attribute smoke tests.</li>
-              <li>Hidden grading testbench with boundary and mutation coverage.</li>
-              <li>Logical equivalence checks where task scale allows it.</li>
+              <li>Fixed wrapper, pinout, clocks, handshakes, and QSPI rules.</li>
+              <li>Hard caps for area, power, clock, gates, macros, and SRAM.</li>
+              <li>Hidden deterministic tests for protocol and application KPIs.</li>
             </ul>
           </article>
           <article>
-            <h3>Meta level</h3>
+            <h3>Benchmark-level checks</h3>
             <ul>
-              <li>Spec obfuscation: no reference names or trade-name leakage.</li>
-              <li>Held-out paraphrases reported as the minimum score.</li>
-              <li>Visible public versus holdout score delta.</li>
-              <li>Canary GUIDs in task files for contamination probing.</li>
-              <li>Time-windowed eval by task release date.</li>
-              <li>Verified-tier scaffold disclosure and trajectory inspection.</li>
+              <li>Locked suite manifests and reproducible workspace manifests.</li>
+              <li>Private harness vectors and golden references at grading time.</li>
+              <li>Scaffold disclosure and trajectory inspection for verified tiers.</li>
             </ul>
           </article>
         </div>

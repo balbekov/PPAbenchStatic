@@ -105,7 +105,7 @@ const renderTrack = (data, trackId) => {
 fetch("data/leaderboard.json")
   .then((response) => response.json())
   .then((data) => {
-    renderTrack(data, "m0");
+    renderTrack(data, "socmate_mpw");
     document.querySelectorAll(".track-tab").forEach((button) => {
       button.addEventListener("click", () => {
         document.querySelectorAll(".track-tab").forEach((tab) => {
